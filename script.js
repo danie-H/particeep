@@ -62,4 +62,6 @@ const movies = [
     },
   ]
   
-  export const moviesData = new Promise((resolve, reject) => setTimeout(resolve, 100, movies))
+const moviesData = new Promise((resolve, reject) => setTimeout(resolve, 100, movies));
+// const response = moviesData
+// console.log(' Movie ', response)
