@@ -1,15 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
+import "react-sweet-progress/lib/style.css";
 import { Movies } from './features/movies/Movies';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <h2>Liste des films</h2>
       <Movies />
-      </header>
     </div>
   );
 }

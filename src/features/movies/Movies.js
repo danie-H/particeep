@@ -1,25 +1,44 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchMovies,
+  removeMovie,
   selectMovies,
+  likeMovie,
+  unlickedMovie,
+  getCategories,
+  selectCategories,
 } from './moviesSlice';
+import StyledMovies from './StyledMovies';
+import Cards from './components/cards/Card';
+import store from '../../app/store';
+import Category from './components/category/Category';
 
 export function Movies() {
-  const dispatch = useDispatch();
-//   const [incrementAmount, setIncrementAmount] = useState('2');
- const movies = useSelector(selectMovies);
- 
+ const dispatch = useDispatch();
+ const movieSelects = useSelector(selectMovies);
+ const [movies, setMovies] = useState([]);
+ const categories = useSelector(selectCategories);
+
   useEffect(() => {
-      dispatch(fetchMovies())
+      dispatch(fetchMovies());
   }, [dispatch])
 
+  useEffect(() => {
+    dispatch(getCategories());
+    setMovies(movieSelects);
+  }, [movieSelects])
+  // handleChange={(data) => { setMovies(data) }}
+  console.log('movies', movies)
   return (
-    <div>
-        <h2>Liste des film</h2>
-     {movies && movies.map(movie => {
-         return <div><span style={{whiteSpace: "pre-line"}}>{movie.title}</span></div>
-     })}
-    </div>
+    <StyledMovies>
+      {movies && categories && <Category movies={movieSelects} categories={categories} handleChange={(data) => { setMovies(data) }} />}
+      <div className='movie-card'>
+        {movies && movies.map(movie => (
+          <Cards key={movie.id} movie={movie} removeMovie={() => dispatch(removeMovie(movie))} likeMovie={() => dispatch(likeMovie(movie))} unlikedMovie={() => dispatch(unlickedMovie(movie))} />
+        ))}
+      </div>
+    </StyledMovies>
   );
 }
