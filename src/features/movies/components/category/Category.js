@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import Select from 'react-select'
 
-const options = (categories, categoryFilter) => {
+const getOptions = (categories, categoryFilter) => {
     const optionsTab = [];
     for (let i = 0; i < categories.length; i++) {
         if(!categoryFilter.includes(categories[i])) {
@@ -25,9 +25,15 @@ const Category = ({ movies, categories, handleChange }) => {
         })
         return cat;
     }, [categories, movies]);
+    const selectEl = useRef(null);
+    const [options, setOptions] = useState([]);
+
+    useEffect((() => {
+        setOptions(getOptions(categories, categoryFilter));
+        selectEl.current.state.value = '';
+    }), [movies, categoryFilter, categories])
 
     const handler = (filters) => {
-        console.log('filters ', filters);
         const filteredMovies = [];
         filters.forEach(filter => movies.forEach(movie => {
             if(movie.category === filter.value) {
@@ -43,7 +49,7 @@ const Category = ({ movies, categories, handleChange }) => {
 
     return (
         <div>
-            <Select options={options(categories, categoryFilter)} isMulti onChange={(filters) => handler(filters)}/>
+            <Select options={options} isMulti onChange={(filters, actions) => handler(filters, actions)} ref={selectEl} />
         </div>
     )
 }
