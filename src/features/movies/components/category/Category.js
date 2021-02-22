@@ -34,7 +34,6 @@ const Category = ({ movies, categories, handleChange }) => {
                 filteredMovies.push(movie);
             }
         }));
-        console.log('filteredMovies', filteredMovies);
         if(filteredMovies.length === 0 && filters.length === 0) {
             handleChange(movies)
         } else {
